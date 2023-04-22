@@ -10,6 +10,7 @@ def driver_wire():
     # options = wiredriver.ChromeOptions()
     # options.add_argument("--headless=new")
     # driver = wiredriver.Chrome(options=options)
+    # driver = wiredriver.Chrome(options=options)
     yield driver
     driver.quit()
 
