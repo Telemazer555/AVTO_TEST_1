@@ -113,7 +113,7 @@ class Perexvat(MainPage):
             # if jsonDict['fio'] == testInputFIO and jsonDict['phone_connection'] == testInputPhone:
             if jsonDict['fio'] == self.Literals.testInputFIO and jsonDict['phone_connection'] == (
                     "7" + self.Literals.testInputPhone):
-                print("_!_!_!_!_!_!_!_!_!_!_!_!_!_! Ураааааа нахуй заработало")
+                print("_!_!_!_!_!_!_!_!_!_!_!_!_!_! Тест пройден")
             else:
                 print("_!_!_!_!_!_!_!_!_!_!_!_!_!_! Failure: запрос отработал успешно, но данные переданы некорректно")
         else:
