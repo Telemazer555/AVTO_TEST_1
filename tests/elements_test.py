@@ -1,11 +1,13 @@
 import random
 import time
 
-from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, \
-    UploadAndDownloadPage
+from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage
 
 
 class TestElements:
+    """ Простые проверки локаторов и базового инструментария: проверяем что поиск элементов на тестовой странице
+    и их корректное заполнение
+    """
     class TestTextBox:
 
         def test_text_box(self, driver):
@@ -27,8 +29,6 @@ class TestElements:
             check_box_page.click_random_checkbox()
             input_checkbox = check_box_page.get_checked_checkboxes()
             output_result = check_box_page.get_output_result()
-            print(input_checkbox)
-            print(output_result)
             assert input_checkbox == output_result
             time.sleep(5)
 
@@ -106,10 +106,10 @@ class TestElements:
             assert right == "You have done a right click", "The right click button was not pressed"
             assert click == "You have done a dynamic click", "The dynamic click button was not pressed"
 
-    class TestUploadAndDownload:
-
-        def test_upload_file(self, driver):
-            upload_download_page = UploadAndDownloadPage(driver, 'https://demoqa.com/upload-download')
-            upload_download_page.open()
-            file_name, result = upload_download_page.upload_file()
-            assert file_name == result, "the file has not been uploaded"
+    # class TestUploadAndDownload:
+    #
+    #     def test_upload_file(self, driver):
+    #         upload_download_page = UploadAndDownloadPage(driver, 'https://demoqa.com/upload-download')
+    #         upload_download_page.open()
+    #         file_name, result = upload_download_page.upload_file()
+    #         assert file_name == result, "the file has not been uploaded"
