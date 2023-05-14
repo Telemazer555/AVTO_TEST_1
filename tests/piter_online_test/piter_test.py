@@ -1,39 +1,9 @@
 import time
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait as wait
-from selenium.webdriver.support import expected_conditions as EC
 import json
 
-
-class MainPage:
-    def __init__(self, driver_wire, url):
-        self.driver = driver_wire
-        self.url = url
-
-    def open(self):
-        self.driver.get(self.url)
-
-    def element_is_visible(self, locator, timeout=5):
-        return wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
-
-    def element_are_visible(self, locator, timeout=5):
-        return wait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
-
-    def element_is_present(self, locator, timeout=5):
-        return wait(self.driver, timeout).until(EC.presence_of_element_located(locator))
-
-    def element_are_present(self, locator, timeout=5):
-        return wait(self.driver, timeout).until(EC.presence_of_all_elements_located(locator))
-
-    def element_is_not_visible(self, locator, timeout=5):
-        return wait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
-
-    def element_is_clickable(self, locator, timeout=5):
-        return wait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
-
-    def go_to_element(self, element):
-        self.driver.execute_script("arguments[0].scrollIntoView();", element)
+from pages.base_page import BasePage
 
 
 class RequisitionForInternetPageInputData:
@@ -44,62 +14,67 @@ class RequisitionForInternetPageInputData:
 
 
 class RequisitionForInternetLocators:
-    SELECT = (By.XPATH, '//div/div/div[1]/div[4]/div[1]/div[1]/div/div/div/div[2]/div/a')
-    Search = (By.XPATH, '//div/div/div[2]/div/div/div/div/div/div[2]/div[2]/div')
-    INPUT_ADDRESS = (By.XPATH,
-                     '//div/div/div[2]/div/div/div/div/div/div[2]/div[7]/div/div[1]/div[2]/div[1]/div[1]/div[1]/div/div/div/div[1]/input')
-    INPUT_HOME = (By.XPATH,
-                  '//div/div/div[2]/div/div/div/div/div/div[2]/div[7]/div/div[1]/div[2]/div[1]/div[1]/div[2]/div/div/div/div[1]/input')
-    INPUT_Connections = (By.XPATH,
-                         '//div/div/div[2]/div/div/div/div/div/div[2]/div[7]/div/div[1]/div[2]/div[1]/div[2]/div/div/div/div[1]/input')
-    INPUT_apartments = (By.XPATH, '//html/body/div/div/div[8]/div[2]/div/div/div/ul/li[1]')
-    INPUT_Rates = (By.XPATH, '//div/div/div[2]/div/div/div/div/div/div[2]/div[7]/div/div[1]/div[2]/div[1]/div[3]/div')
-    Cross = (By.XPATH, '//*[@id="root"]/div/div[1]/div[4]/div[4]/div[1]/div/div/div[2]/div[1]/div[7]/div/div/div[2]/div[2]/a')
-    Plug = (
-        By.XPATH,
-        '//div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[2]/div/div[2]/input')
-    NAME = (By.XPATH, '//div/div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[2]/div/div[2]/input')
-    NUMBER = (By.XPATH, '//*[@id="root"]/div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[2]/div/div[2]/input')
-    OKS = (By.XPATH, '//*[@id="root"]/div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[5]/div')
+    SomeElementForTopBarAppearance = (By.XPATH, '//div/div/div[1]/div[4]/div[1]/div[1]/div/div/div/div[2]/div/a')
+    """Чтобы панель с кнопкой оформления заявки вверху страницы появилась, нужно немного проскролить страницу до этого элемента"""
+
+    SearchButton = (By.XPATH, '//div/div/div[2]/div/div/div/div/div/div[2]/div[2]/div')
+    AddressStreetTextField = (By.XPATH,
+                              '//div/div/div[2]/div/div/div/div/div/div[2]/div[7]/div/div[1]/div[2]/div[1]/div[1]/div[1]/div/div/div/div[1]/input')
+    AddressHomeNumberTextField = (By.XPATH,
+                                  '//div/div/div[2]/div/div/div/div/div/div[2]/div[7]/div/div[1]/div[2]/div[1]/div[1]/div[2]/div/div/div/div[1]/input')
+    ConnectionTypesButton = (By.XPATH,
+                             '//div/div/div[2]/div/div/div/div/div/div[2]/div[7]/div/div[1]/div[2]/div[1]/div[2]/div/div/div/div[1]/input')
+    ConnectionTypesListApartmentTypeElement = (By.XPATH, '//html/body/div/div/div[8]/div[2]/div/div/div/ul/li[1]')
+    GoToTariffsButton = (By.XPATH,
+                         '//div/div/div[2]/div/div/div/div/div/div[2]/div[7]/div/div[1]/div[2]/div[1]/div[3]/div')
+    PromoPopupCloseButton = (By.XPATH,
+                             '//*[@id="root"]/div/div[1]/div[4]/div[4]/div[1]/div/div/div[2]/div[1]/div[7]/div/div/div[2]/div[2]/a')
+    FirstTariffRequisitionButton = (By.XPATH,
+                                    '//div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[2]/div/div[2]/input')
+    Name = (By.XPATH, '//div/div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[2]/div/div[2]/input')
+    PhoneNumberTextField = (By.XPATH,
+                            '//*[@id="root"]/div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[2]/div/div[2]/input')
 
 
-class RequisitionForInternetConnectionTest(MainPage):
+class RequisitionForInternetConnectionTest(BasePage):
     """Проверка оформления заявки на проведение интернета в кваиртиру"""
     inputData = RequisitionForInternetPageInputData()
     locators = RequisitionForInternetLocators()
 
     def test_requisition(self):
 
-        self.go_to_element(self.element_is_present(self.locators.SELECT))
+        self.go_to_element(self.element_is_present(self.locators.SomeElementForTopBarAppearance))
         time.sleep(1)
-        self.element_is_visible(self.locators.Search).click()
+        self.element_is_visible(self.locators.SearchButton).click()
 
-        ADD_INPUT = self.element_is_visible(self.locators.INPUT_ADDRESS)
-        ADD_INPUT.clear()
-        ADD_INPUT.send_keys(self.inputData.testInputStreet)
+        addressStreetField = self.element_is_visible(self.locators.AddressStreetTextField)
+        addressStreetField.clear()
+        addressStreetField.send_keys(self.inputData.testInputStreet)
         time.sleep(3)
-        ADD_INPUT.send_keys(Keys.ENTER)
+        addressStreetField.send_keys(Keys.ENTER)
         time.sleep(2)
-        self.element_is_visible(self.locators.INPUT_HOME).send_keys(self.inputData.testInputHome)
+        self.element_is_visible(self.locators.AddressHomeNumberTextField).send_keys(self.inputData.testInputHome)
         time.sleep(1)
 
-        self.element_is_visible(self.locators.INPUT_Connections).click()
-        self.element_is_visible(self.locators.INPUT_apartments).click()
-        self.element_is_visible(self.locators.INPUT_Rates).click()
+        self.element_is_visible(self.locators.ConnectionTypesButton).click()
+        self.element_is_visible(self.locators.ConnectionTypesListApartmentTypeElement).click()
+        self.element_is_visible(self.locators.GoToTariffsButton).click()
+        # Запрос при клике на INPUT_Rates часто меняется, из-за чего ожидание ответа на него не очень подходит, т.к. ломается тест. Используем sleep как универсальное решение
         time.sleep(5)
-        self.element_is_visible(self.locators.Cross).click()
+        self.element_is_visible(self.locators.PromoPopupCloseButton).click()
         time.sleep(1)
-        self.element_is_visible(self.locators.Plug).click()
-        self.element_is_visible(self.locators.NUMBER).send_keys(self.inputData.testInputPhone)
+        self.element_is_visible(self.locators.FirstTariffRequisitionButton).click()
+        self.element_is_visible(self.locators.PhoneNumberTextField).send_keys(self.inputData.testInputPhone)
+
+        # Запрос /api/sites/webhook часто меняется
         request = self.driver.wait_for_request('/api/sites/webhook?type=site101-order-home')
         # print("\nawaited response", request)
 
         if request.response.status_code == 200 and request.method == 'POST':
             requestBody = request.body.decode('utf-8')
             jsonDict = json.loads(requestBody)
-            print("\n", requestBody, "\nfio: ", jsonDict['fio'], '\nphone: ', jsonDict['phone_connection'],
-                  type(jsonDict['fio']), type(self.inputData.testInputFIO))
-            # if jsonDict['fio'] == testInputFIO and jsonDict['phone_connection'] == testInputPhone:
+            # print("\n", requestBody, "\nfio: ", jsonDict['fio'], '\nphone: ', jsonDict['phone_connection'],
+            #       type(jsonDict['fio']), type(self.inputData.testInputFIO))
             if jsonDict['fio'] == self.inputData.testInputFIO and jsonDict['phone_connection'] == (
                     "7" + self.inputData.testInputPhone):
                 print("_!_!_!_!_!_!_!_!_!_!_!_!_!_! Тест пройден")
@@ -109,10 +84,15 @@ class RequisitionForInternetConnectionTest(MainPage):
             print("_!_!_!_!_!_!_!_!_!_!_!_!_!_! тест не пройден")
 
 
+class RequisitionForInternetConnectionTestRunner():
 
-class TestAvto():
-
-    def test_avto(self, driver_wire):
+    def run_test(self, driver_wire):
         piter_online = RequisitionForInternetConnectionTest(driver_wire, "https://piter-online.net/")
+
+        # self.configure_charles_proxy(piter_online.driver)
+
         piter_online.open()
         piter_online.test_requisition()
+
+    def configure_charles_proxy(self, driver):
+        print()
