@@ -36,14 +36,14 @@ class MainPage:
         self.driver.execute_script("arguments[0].scrollIntoView();", element)
 
 
-class PageLiterals:
+class RequisitionForInternetPageInputData:
     testInputStreet = 'Тестовая линия'
     testInputHome = '1'
     testInputFIO = 'Автотест'
     testInputPhone = '1111111111'
 
 
-class RequestConnectionLocators:
+class RequisitionForInternetLocators:
     SELECT = (By.XPATH, '//div/div/div[1]/div[4]/div[1]/div[1]/div/div/div/div[2]/div/a')
     Search = (By.XPATH, '//div/div/div[2]/div/div/div/div/div/div[2]/div[2]/div')
     INPUT_ADDRESS = (By.XPATH,
@@ -63,11 +63,12 @@ class RequestConnectionLocators:
     OKS = (By.XPATH, '//*[@id="root"]/div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[5]/div')
 
 
-class Perexvat(MainPage):
-    Literals = PageLiterals()
-    locators = RequestConnectionLocators()
+class RequisitionForInternetConnectionTest(MainPage):
+    """Проверка оформления заявки на проведение интернета в кваиртиру"""
+    inputData = RequisitionForInternetPageInputData()
+    locators = RequisitionForInternetLocators()
 
-    def piter(self):
+    def test_requisition(self):
 
         self.go_to_element(self.element_is_present(self.locators.SELECT))
         time.sleep(1)
@@ -75,11 +76,11 @@ class Perexvat(MainPage):
 
         ADD_INPUT = self.element_is_visible(self.locators.INPUT_ADDRESS)
         ADD_INPUT.clear()
-        ADD_INPUT.send_keys(self.Literals.testInputStreet)
+        ADD_INPUT.send_keys(self.inputData.testInputStreet)
         time.sleep(3)
         ADD_INPUT.send_keys(Keys.ENTER)
         time.sleep(2)
-        self.element_is_visible(self.locators.INPUT_HOME).send_keys(self.Literals.testInputHome)
+        self.element_is_visible(self.locators.INPUT_HOME).send_keys(self.inputData.testInputHome)
         time.sleep(1)
 
         self.element_is_visible(self.locators.INPUT_Connections).click()
@@ -88,32 +89,19 @@ class Perexvat(MainPage):
         time.sleep(5)
         self.element_is_visible(self.locators.Cross).click()
         time.sleep(1)
-        # self.go_to_element(self.element_is_present(self.locators.Plug))
         self.element_is_visible(self.locators.Plug).click()
-        # self.element_is_visible(self.locators.NAME).send_keys(self.Literals.testInputFIO)
-        self.element_is_visible(self.locators.NUMBER).send_keys(self.Literals.testInputPhone)
-        # time.sleep(2)
-        # self.element_is_visible(self.locators.OKS).click()
-        # time.sleep(2)
-        # self.driver.find_element(By.XPATH,
-        #                          '//*[@id="root"]/div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[5]/div').click()
-        # time.sleep(2)
+        self.element_is_visible(self.locators.NUMBER).send_keys(self.inputData.testInputPhone)
         request = self.driver.wait_for_request('/api/sites/webhook?type=site101-order-home')
-        # request = self.driver.wait_for_request('/webhook?type=site101-order-home')
-        # request = self.driver.wait_for_request('https://piter-online.net/api/sites/webhook?type=site101-order-home')
-        # request = self.driver.wait_for_request('piter-online.net/api/sites/webhook?type=site101-order-home')
-
-
-        print("\nawaited response", request)
+        # print("\nawaited response", request)
 
         if request.response.status_code == 200 and request.method == 'POST':
             requestBody = request.body.decode('utf-8')
             jsonDict = json.loads(requestBody)
             print("\n", requestBody, "\nfio: ", jsonDict['fio'], '\nphone: ', jsonDict['phone_connection'],
-                  type(jsonDict['fio']), type(self.Literals.testInputFIO))
+                  type(jsonDict['fio']), type(self.inputData.testInputFIO))
             # if jsonDict['fio'] == testInputFIO and jsonDict['phone_connection'] == testInputPhone:
-            if jsonDict['fio'] == self.Literals.testInputFIO and jsonDict['phone_connection'] == (
-                    "7" + self.Literals.testInputPhone):
+            if jsonDict['fio'] == self.inputData.testInputFIO and jsonDict['phone_connection'] == (
+                    "7" + self.inputData.testInputPhone):
                 print("_!_!_!_!_!_!_!_!_!_!_!_!_!_! Тест пройден")
             else:
                 print("_!_!_!_!_!_!_!_!_!_!_!_!_!_! Failure: запрос отработал успешно, но данные переданы некорректно")
@@ -125,6 +113,6 @@ class Perexvat(MainPage):
 class TestAvto():
 
     def test_avto(self, driver_wire):
-        piter_online = Perexvat(driver_wire, "https://piter-online.net/")
+        piter_online = RequisitionForInternetConnectionTest(driver_wire, "https://piter-online.net/")
         piter_online.open()
-        piter_online.piter()
+        piter_online.test_requisition()

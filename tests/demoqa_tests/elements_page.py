@@ -2,7 +2,7 @@ import random
 
 from selenium.webdriver.common.by import By
 from generator.generator import generated_person  # generated_file
-from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
+from tests.demoqa_tests.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
     WebtablePageLocators, ButtonsPageLocators  # , UploadAndDownloadPageLocators
 
 from pages.base_page import BasePage

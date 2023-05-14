@@ -1,11 +1,11 @@
 import random
 import time
 
-from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage
+from tests.demoqa_tests.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage
 
 
 class TestElements:
-    """ Простые проверки локаторов и базового инструментария: проверяем что поиск элементов на тестовой странице
+    """ Простые проверки локаторов и базового инструментария: проверяем поиск элементов на тестовой странице
     и их корректное заполнение
     """
     class TestTextBox:

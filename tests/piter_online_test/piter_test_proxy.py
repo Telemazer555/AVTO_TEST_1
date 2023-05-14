@@ -1,15 +1,12 @@
 import time
 
-import pytest
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from seleniumwire import webdriver
 from selenium.webdriver.chrome.options import Options
 import json
 
-
+# настраиваем options для возможности перехвата запросов через Charles
 options = {
     'proxy': dict(http='http://localhost:8888', https='http://localhost:8888', no_proxy='http://localhost:8888')}
 driver = webdriver.Chrome(seleniumwire_options=options)
@@ -18,8 +15,6 @@ options.add_experimental_option('excludeSwitches', ['enable-automation'])
 proxy_server_url = "http://localhost:8888"
 options.add_argument(f'--proxy-server={proxy_server_url}')
 
-
-# @pytest.fixture
 def piter():
     testInputFIO = 'Автотест'
     testInputPhone = '1111111111'
@@ -54,24 +49,15 @@ def piter():
     time.sleep(2)
     driver.execute_script("window.scrollTo(0, window.scrollY + 600)")
     driver.find_element(By.XPATH, '//body/div/div/div[4]/div/div/div/div/div').click()
-    # time.sleep(20)
     driver.find_element(By.XPATH,
                         '//*[@id="root"]/div/div[1]/div[4]/div[4]/div[1]/div/div/div[2]/div[1]/div[7]/div/div/div[2]/div[2]/a').click()
     time.sleep(2)
-
-    # driver.find_element(By.XPATH,
-    #                     '//div/div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[2]/div/div[2]/input').send_keys(
-    #     testInputFIO)
-    time.sleep(1)
     driver.find_element(By.XPATH,
                         '//*[@id="root"]/div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[2]/div/div[2]/input').send_keys(
         testInputPhone)
     time.sleep(2)
 
     driver.find_element(By.XPATH, '//*[@id="root"]/div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[5]/div').click()
-    # request = driver.wait_for_request('orders.101internet.ru/api_external/sites/webhook')
-    # request = driver.wait_for_request('/api/sites/webhook?type=site101-order-home')
-    # request = driver.wait_for_request('piter-online.net/api/sites/webhook?type=site101-order-home')
     request = driver.wait_for_request('https://piter-online.net/api/sites/webhook?type=site101-order-home')
     print("\nawaited response", request)
 
@@ -82,13 +68,11 @@ def piter():
               type(jsonDict['fio']), type(testInputFIO))
         # if jsonDict['fio'] == testInputFIO and jsonDict['phone_connection'] == testInputPhone:
         if jsonDict['fio'] == testInputFIO and jsonDict['phone_connection'] == ("7" + testInputPhone):
-            print("_!_!_!_!_!_!_!_!_!_!_!_!_!_! Ураааааа нахуй заработало")
+            print("_!_!_!_!_!_!_!_!_!_!_!_!_!_! Тест пройден")
         else:
             print("_!_!_!_!_!_!_!_!_!_!_!_!_!_! Failure: запрос отработал успешно, но данные переданы некорректно")
     else:
         print("_!_!_!_!_!_!_!_!_!_!_!_!_!_! тест не пройден")
-
-
 
 piter()
 time.sleep(2)

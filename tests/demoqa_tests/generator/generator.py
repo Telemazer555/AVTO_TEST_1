@@ -1,6 +1,6 @@
 import random
 
-from data.data import Person
+from tests.demoqa_tests.data.data import Person
 from faker import Faker
 
 faker_ru = Faker('ru_RU')
