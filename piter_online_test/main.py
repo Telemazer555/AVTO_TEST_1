@@ -77,11 +77,15 @@ class RequestConnectionLocators:
                          '//div/div/div[2]/div/div/div/div/div/div[2]/div[7]/div/div[1]/div[2]/div[1]/div[2]/div/div/div/div[1]/input')
     INPUT_apartments = (By.XPATH, '//html/body/div/div/div[8]/div[2]/div/div/div/ul/li[1]')
     INPUT_Rates = (By.XPATH, '//div/div/div[2]/div/div/div/div/div/div[2]/div[7]/div/div[1]/div[2]/div[1]/div[3]/div')
-    Cross = (By.XPATH, '//body/div/div/div[4]/div/div/div/div/div')
-    Plug = (By.XPATH, '//*[@id="root"]/div/div[1]/div[4]/div[4]/div[1]/div/div/div[2]/div[1]/div[7]/div/div/div[2]/div[2]/a')
+    Cross = (
+        By.XPATH,
+        '//*[@id="root"]/div/div[1]/div[4]/div[4]/div[1]/div/div/div[2]/div[1]/div[7]/div/div/div[2]/div[2]/a')
+    Plug = (
+        By.XPATH,
+        '//div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[2]/div/div[2]/input')
     NAME = (By.XPATH, '//div/div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[2]/div/div[2]/input')
-    NUMBER = (By.XPATH, '//div/div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[3]/div/div[2]/input')
-    OKS = (By.XPATH, '//div/div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[6]/div')
+    NUMBER = (By.XPATH, '//*[@id="root"]/div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[2]/div/div[2]/input')
+    OKS = (By.XPATH, '//*[@id="root"]/div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[5]/div')
 
 
 class TestRequestConnectionPage(BasePage):
@@ -107,15 +111,13 @@ class TestRequestConnectionPage(BasePage):
         time.sleep(5)
         self.element_is_visible(self.locators.Cross).click()
         # time.sleep(25)
-        self.go_to_element(self.element_is_present(self.locators.Plug))
+        # self.go_to_element(self.element_is_present(self.locators.Plug))
         self.element_is_visible(self.locators.Plug).click()
-        self.element_is_visible(self.locators.NAME).send_keys("Автотест")
+        # self.element_is_visible(self.locators.NAME).send_keys("Автотест")
         self.element_is_visible(self.locators.NUMBER).send_keys("1111111111")
         time.sleep(2)
         self.element_is_visible(self.locators.OKS).click()
         time.sleep(5)
-
-
 
         response = requests.post('https://orders.101internet.ru/api_external/sites/webhook?type=site101-order-home')
         request_headers = response.request.headers
