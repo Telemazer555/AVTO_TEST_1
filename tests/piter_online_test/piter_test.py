@@ -17,31 +17,31 @@ class RequisitionForInternetLocators:
     SomeElementForTopBarAppearance = (By.XPATH, '//div/div/div[1]/div[4]/div[1]/div[1]/div/div/div/div[2]/div/a')
     """Чтобы панель с кнопкой оформления заявки вверху страницы появилась, нужно немного проскролить страницу до этого элемента"""
 
-    SearchButton = (By.XPATH, '//div/div/div[2]/div/div/div/div/div/div[2]/div[2]/div')
-    AddressStreetTextField = (By.XPATH,
-                              '//div/div/div[2]/div/div/div/div/div/div[2]/div[7]/div/div[1]/div[2]/div[1]/div[1]/div[1]/div/div/div/div[1]/input')
-    AddressHomeNumberTextField = (By.XPATH,
-                                  '//div/div/div[2]/div/div/div/div/div/div[2]/div[7]/div/div[1]/div[2]/div[1]/div[1]/div[2]/div/div/div/div[1]/input')
-    ConnectionTypesButton = (By.XPATH,
-                             '//div/div/div[2]/div/div/div/div/div/div[2]/div[7]/div/div[1]/div[2]/div[1]/div[2]/div/div/div/div[1]/input')
+    SearchButton = (By.CSS_SELECTOR, 'div [datatest="button_upper_compare_tariffs"]')
+    AddressStreetTextField = (By.CSS_SELECTOR,
+                              '[class="app141 app146 app143 app160 app142"]')
+    AddressHomeNumberTextField = (By.CSS_SELECTOR,
+                                  '[class="app141 app146 app143 app160"]')
+    ConnectionTypesButton = (By.CSS_SELECTOR,
+                             'div.app122 > div > div > div > div.app161 > input')
     ConnectionTypesListApartmentTypeElement = (By.XPATH, '//html/body/div/div/div[8]/div[2]/div/div/div/ul/li[1]')
     GoToTariffsButton = (By.XPATH,
                          '//div/div/div[2]/div/div/div/div/div/div[2]/div[7]/div/div[1]/div[2]/div[1]/div[3]/div')
-    PromoPopupCloseButton = (By.XPATH,
-                             '//*[@id="root"]/div/div[1]/div[4]/div[4]/div[1]/div/div/div[2]/div[1]/div[7]/div/div/div[2]/div[2]/a')
+    PromoPopupCloseButton = (By.CSS_SELECTOR,
+                             'div [datatest="close_popup1_from_quiz_input_tel"]')
     FirstTariffRequisitionButton = (By.XPATH,
-                                    '//div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[2]/div/div[2]/input')
+                                    '//*[@id="root"]/div/div[1]/div[4]/div[4]/div[1]/div/div/div[2]/div[1]/div[7]/div/div/div[2]/div[2]/a')
     Name = (By.XPATH, '//div/div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[2]/div/div[2]/input')
     PhoneNumberTextField = (By.XPATH,
                             '//*[@id="root"]/div/div[1]/div[4]/div/div[2]/div[1]/form/div/div[2]/div/div[2]/input')
 
 
-class RequisitionForInternetConnectionTest(BasePage):
+class RequisitionForInternetConnection(BasePage):
     """Проверка оформления заявки на проведение интернета в кваиртиру"""
     inputData = RequisitionForInternetPageInputData()
     locators = RequisitionForInternetLocators()
 
-    def test_requisition(self):
+    def requisition(self):
 
         self.go_to_element(self.element_is_present(self.locators.SomeElementForTopBarAppearance))
         time.sleep(1)
@@ -84,15 +84,13 @@ class RequisitionForInternetConnectionTest(BasePage):
             print("_!_!_!_!_!_!_!_!_!_!_!_!_!_! тест не пройден")
 
 
-class RequisitionForInternetConnectionTestRunner():
+class TestRequisitionForInternetConnectionRunner():
 
-    def run_test(self, driver_wire):
-        piter_online = RequisitionForInternetConnectionTest(driver_wire, "https://piter-online.net/")
-
+    def test_run(self, driver_wire):
+        piter_online = RequisitionForInternetConnection(driver_wire, "https://piter-online.net/")
         # self.configure_charles_proxy(piter_online.driver)
-
         piter_online.open()
-        piter_online.test_requisition()
+        piter_online.requisition()
 
-    def configure_charles_proxy(self, driver):
-        print()
+    # def configure_charles_proxy(self, driver):
+    #     print()
